@@ -1,0 +1,39 @@
+class Solution {
+    public int maxVowels(String s, int k) {
+        Set<Character> target = new HashSet<>();
+        target.add('a');
+        target.add('e');
+        target.add('i');
+        target.add('o');
+        target.add('u');
+
+        int n = 0, result = 0;
+        boolean[] substr = new boolean[k];
+
+        for (int i = 0; i < k; ++i) {
+            if (target.contains(s.charAt(i))) {
+                substr[i] = true;
+                ++n;
+            } else {
+                substr[i] = false;
+            }
+        }
+        result = n;
+
+        for (int i = k; i < s.length(); ++i) {
+            boolean first = substr[0];
+            System.arraycopy(substr, 1, substr, 0, k - 1);
+            substr[k - 1] = target.contains(s.charAt(i));
+
+            if (first) {
+                --n;
+            }
+            if (target.contains(s.charAt(i))) {
+                ++n;
+            }
+            result = Math.max(result, n);
+        }
+
+        return result;
+    }
+}
